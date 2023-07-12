@@ -3,8 +3,14 @@ import {
   Avatar,
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   IconButton,
+  Slide,
   Stack,
   Typography,
 } from "@mui/material";
@@ -20,11 +26,80 @@ import {
   X,
 } from "phosphor-react";
 import { useDispatch } from "react-redux";
-import { ToggleSidebar } from "../../redux/slice/appReducer";
+import { ToggleSidebar, UpdateSidebar } from "../../redux/slice/appReducer";
 import { faker } from "@faker-js/faker";
 import AntSwitch from "../../components/AntSwitch";
+import React from "react";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const BlogDialog = ({ open, handleClose }) => {
+  return (
+    <Dialog
+      open={open}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleClose}
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <DialogTitle>{"Blog Contact"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+          Are you sure, you want to blog contact?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Yes</Button>
+        <Button onClick={handleClose}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+const DeleteDialog = ({ open, handleClose }) => {
+  return (
+    <Dialog
+      open={open}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleClose}
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <DialogTitle>{"Delete Contact"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+          Are you sure, you want to delete contact ?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Yes</Button>
+        <Button onClick={handleClose}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 const Contact = () => {
+  const [blogOpen, setBlogOpen] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+
+  const handleBlogOpen = () => {
+    setBlogOpen(true);
+  };
+
+  const handleBlogClose = () => {
+    setBlogOpen(false);
+  };
+
+  const handleDeleteOpen = () => {
+    setDeleteOpen(true);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+  };
+
   const theme = useTheme();
   const dispatch = useDispatch();
   return (
@@ -116,7 +191,14 @@ const Contact = () => {
             p={2}
           >
             <Typography variant="subtitle2">Media Links & Docs</Typography>
-            <Button endIcon={<CaretRight />}>400</Button>
+            <Button
+              onClick={() => {
+                dispatch(UpdateSidebar("SHARED"));
+              }}
+              endIcon={<CaretRight />}
+            >
+              400
+            </Button>
           </Stack>
           <Stack p={3} direction={"row"} alignItems={"center"} spacing={2}>
             {[0, 1, 2, 3].map((_) => (
@@ -141,9 +223,13 @@ const Contact = () => {
           >
             <Stack direction={"row"} alignItems={"center"} spacing={2}>
               <Star />
-              <Typography variant="subtitle2">Share Message</Typography>
+              <Typography variant="subtitle2">Stared Message</Typography>
             </Stack>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch(UpdateSidebar("STARRED"));
+              }}
+            >
               <CaretRight />
             </IconButton>
           </Stack>
@@ -189,15 +275,33 @@ const Contact = () => {
             alignItems={"center"}
             spacing={2}
           >
-            <Button startIcon={<Prohibit />} fullWidth variant="outlined">
+            <Button
+              onClick={() => {
+                setBlogOpen(true);
+              }}
+              startIcon={<Prohibit />}
+              fullWidth
+              variant="outlined"
+            >
               Block
             </Button>
-            <Button startIcon={<Trash />} fullWidth variant="outlined">
+            <Button
+              onClick={() => {
+                setDeleteOpen(true);
+              }}
+              startIcon={<Trash />}
+              fullWidth
+              variant="outlined"
+            >
               Delete
             </Button>
           </Stack>
         </Stack>
       </Stack>
+      {blogOpen && <BlogDialog handleClose={handleBlogClose} open={blogOpen} />}
+      {deleteOpen && (
+        <DeleteDialog handleClose={handleDeleteClose} open={deleteOpen} />
+      )}
     </Box>
   );
 };

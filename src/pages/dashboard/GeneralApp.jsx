@@ -3,6 +3,9 @@ import { useTheme } from "@mui/material/styles";
 import Chart from "./Chart";
 import Conversation from "../../components/Conversations";
 import Contact from "./Contact";
+import SharedMesssage from "../../components/SharedMesssage";
+import StartMessage from "../../components/StartMessage";
+
 import { useSelector } from "react-redux";
 const GeneralApp = () => {
   const theme = useTheme();
@@ -23,7 +26,19 @@ const GeneralApp = () => {
         <Conversation />
       </Box>
 
-      {sidebar.open && <Contact />}
+      {sidebar.open &&
+        (() => {
+          switch (sidebar.type) {
+            case "CONTACT":
+              return <Contact />;
+            case "SHARED":
+              return <SharedMesssage />;
+            case "STARRED":
+              return <StartMessage />;
+            default:
+              break;
+          }
+        })()}
     </Stack>
   );
 };

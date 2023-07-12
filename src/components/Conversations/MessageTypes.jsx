@@ -31,7 +31,7 @@ const TimeLine = ({ el }) => {
   );
 };
 
-const MediaMsg = ({ el }) => {
+const MediaMsg = ({ el, id }) => {
   const theme = useTheme();
   return (
     <Stack direction={"row"} justifyContent={el.incoming ? "start" : "end"}>
@@ -59,12 +59,13 @@ const MediaMsg = ({ el }) => {
           </Typography>
         </Stack>
       </Box>
+
       <MessageOptions />
     </Stack>
   );
 };
 
-const DocMsg = ({ el }) => {
+const DocMsg = ({ el, menu = "" }) => {
   const theme = useTheme();
   return (
     <Stack direction={"row"} justifyContent={el.incoming ? "start" : "end"}>
@@ -75,7 +76,7 @@ const DocMsg = ({ el }) => {
             ? theme.palette.background.default
             : theme.palette.primary.main,
           borderRadius: 1.5,
-          width: "max-content",
+          width: menu === "menu" ? "100%" : "max-content",
         }}
       >
         <Stack spacing={2}>
@@ -103,12 +104,12 @@ const DocMsg = ({ el }) => {
           </Typography>
         </Stack>
       </Box>
-      <MessageOptions />
+      {menu === "menu" ? "" : <MessageOptions />}
     </Stack>
   );
 };
 
-const Linkmsg = ({ el }) => {
+const Linkmsg = ({ el, menu = "" }) => {
   const theme = useTheme();
   return (
     <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
@@ -150,12 +151,12 @@ const Linkmsg = ({ el }) => {
           </Typography>
         </Stack>
       </Box>
-      <MessageOptions />
+      {menu === "menu" ? "" : <MessageOptions />}
     </Stack>
   );
 };
 
-const ReplyMsg = ({ el }) => {
+const ReplyMsg = ({ el, id }) => {
   const theme = useTheme();
   return (
     <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
@@ -191,7 +192,7 @@ const ReplyMsg = ({ el }) => {
           </Typography>
         </Stack>
       </Box>
-      <MessageOptions />
+      {id && <MessageOptions />}
     </Stack>
   );
 };

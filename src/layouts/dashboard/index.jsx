@@ -80,20 +80,20 @@ const DashboardLayout = () => {
 
   return (
     <>
-      <Stack direction="row">
+      <Stack direction="row" sx={{ position: "relative" }}>
         <Box
           py={2}
           sx={{
             backgroundColor: theme.palette.background.paper,
             boxShadow: "0 0 2px rgba(0, 0, 0, 0.25)",
-            height: "100%",
+            height: "100vh",
             width: 100,
           }}
         >
           <Stack
             direction="column"
             alignItems={"center"}
-            sx={{ height: "100vh" }}
+            sx={{ height: "100%" }}
             justifyContent="space-between"
             spacing={3}
           >

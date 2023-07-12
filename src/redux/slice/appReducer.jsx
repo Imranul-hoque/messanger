@@ -27,3 +27,13 @@ export function ToggleSidebar() {
     dispatch(slice.actions.toggleSidebar());
   };
 }
+
+export function UpdateSidebar(type) {
+  return async (dispatch) => {
+    dispatch(
+      slice.actions.updateSidebar({
+        type,
+      })
+    );
+  };
+}
